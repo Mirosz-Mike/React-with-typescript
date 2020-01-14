@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Todo, ToggleTodo } from "./types";
+import TodoList from "./TodoList";
+
+const initialTodos: Array<Todo> = [
+  { text: "TodoList react in typescript", complete: true },
+  { text: "JavaScript is awesome", complete: true },
+  { text: "TypeScript is the future", complete: false }
+];
 
 const App: React.FC = () => {
+  const [todos, setTodos] = useState(initialTodos);
+
+  const toggleTodo: ToggleTodo = selectedTodo => {
+    const newTodos = todos.map(todo => {
+      if (todo === selectedTodo) {
+        return { ...todo, complete: !todo.complete };
+      }
+      return todo;
+    });
+
+    setTodos(newTodos);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <TodoList todos={todos} toggleTodo={toggleTodo} />
     </div>
   );
-}
+};
 
 export default App;
